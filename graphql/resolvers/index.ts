@@ -14,6 +14,7 @@ export const resolvers = {
     getUser,
     getUsers,
     getAllTasks,
+    getUserDoneTasksLists,
   },
   Mutation: {
     createUser,
@@ -21,6 +22,6 @@ export const resolvers = {
     deleteUser,
     updateTask,
     addTask,
-    getUserDoneTasksLists,
+    
   }
 };
