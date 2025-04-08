@@ -6,6 +6,7 @@ import { updateTask } from "./mutations/updateTask";
 import { updateUser } from "./mutations/updateUser";
 import { getUser } from "./queries/getUser";
 import { getUsers } from "./queries/getUsers";
+import { getUserDoneTasksLists } from "./queries/getUserDoneTasksLists";
 
 
 export const resolvers = {
@@ -20,5 +21,6 @@ export const resolvers = {
     deleteUser,
     updateTask,
     addTask,
+    getUserDoneTasksLists,
   }
 };

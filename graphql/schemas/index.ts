@@ -25,6 +25,7 @@ export const typeDefs = gql`
     getUser(id: ID!): User
     getUsers: [User!]!
     getAllTasks: [Task!]!
+    getUserDoneTasksLists(userId: String!): [Task!]!
   }
   type Mutation {
     createUser(username: String!, email: String!, password: String!): User!
