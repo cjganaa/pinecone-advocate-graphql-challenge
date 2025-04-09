@@ -2,7 +2,10 @@ import { gql } from "graphql-tag";
 
 export const typeDefs = gql`
   scalar Date
-
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
   type User {
     id: ID!
     username: String!
@@ -26,6 +29,7 @@ export const typeDefs = gql`
     getAllTasks: [Task!]!
   }
   type Mutation {
+    login(email: String!, password: String!): AuthPayload!
     getUser(id: ID!): User
     getUserDoneTasksLists(userId: String!): [Task!]!
     createUser(username: String!, email: String!, password: String!): User!

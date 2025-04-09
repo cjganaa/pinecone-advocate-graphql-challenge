@@ -7,7 +7,7 @@ import { updateUser } from "./mutations/updateUser";
 import { getUser } from "./mutations/getUser";
 import { getUsers } from "./queries/getUsers";
 import { getUserDoneTasksLists } from "./mutations/getUserDoneTasksLists";
-
+import { login } from "./mutations/login";
 
 export const resolvers = {
   Query: {
@@ -15,6 +15,7 @@ export const resolvers = {
     getAllTasks,
   },
   Mutation: {
+    login,
     getUsers,
     getUserDoneTasksLists,
     createUser,
