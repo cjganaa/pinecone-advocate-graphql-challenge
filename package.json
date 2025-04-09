@@ -12,13 +12,14 @@
     "generate": "graphql-codegen --config ./codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.6",
     "@apollo/subgraph": "^2.8.4",
     "@apollo/utils.keyvaluecache": "^3.1.0",
     "@types/graphql-upload": "^16.0.7",
     "apollo-server-cloud-functions": "^3.13.0",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.4.0",
-    "graphql": "^16.9.0",
+    "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
     "graphql-tools": "^9.0.1",
     "graphql-upload": "^16.0.2",

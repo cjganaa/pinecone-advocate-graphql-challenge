@@ -4,19 +4,19 @@ import { createUser } from "./mutations/createUser";
 import { deleteUser } from "./mutations/deleteUser";
 import { updateTask } from "./mutations/updateTask";
 import { updateUser } from "./mutations/updateUser";
-import { getUser } from "./queries/getUser";
+import { getUser } from "./mutations/getUser";
 import { getUsers } from "./queries/getUsers";
-import { getUserDoneTasksLists } from "./queries/getUserDoneTasksLists";
+import { getUserDoneTasksLists } from "./mutations/getUserDoneTasksLists";
 
 
 export const resolvers = {
   Query: {
     getUser,
-    getUsers,
     getAllTasks,
-    getUserDoneTasksLists,
   },
   Mutation: {
+    getUsers,
+    getUserDoneTasksLists,
     createUser,
     updateUser,
     deleteUser,
