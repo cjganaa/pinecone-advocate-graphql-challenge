@@ -3,8 +3,12 @@ import { gql } from "graphql-tag";
 export const typeDefs = gql`
   scalar Date
   type AuthPayload {
-    token: String!
+    accessToken: String!
+    refreshToken: String!
     user: User!
+  }
+  type TokenPayload {
+    accessToken: String!
   }
   type User {
     id: ID!
@@ -30,8 +34,10 @@ export const typeDefs = gql`
   }
   type Mutation {
     login(email: String!, password: String!): AuthPayload!
+    refreshToken(refreshToken: String!): TokenPayload!
     getUser(id: ID!): User
     getUserDoneTasksLists(userId: String!): [Task!]!
+    getUserAllTasksLists(userId: String!): [Task!]!
     createUser(username: String!, email: String!, password: String!): User!
     updateUser(id: ID!, username: String, email: String, password: String): User!
     deleteUser(id: ID!): User!

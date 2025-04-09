@@ -8,7 +8,8 @@ import Loading from '../components/Loading';
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token
+      accessToken
+      refreshToken
       user {
         id
         username
@@ -30,13 +31,14 @@ export default function Login() {
       const { data } = await loginUser({
         variables: { email, password },
       });
-      const { token } = data.login;
+      const { accessToken, refreshToken } = data.login;
 
-      localStorage.setItem('token', token);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
 
-      //console.log('Logged in:', data.login.user);
+      console.log('Logged in:', data.login.user);
       alert('Login successful!');
-      router.push('/');
+      router.push('/'); // Redirect to home page or dashboard
     } catch (err) {
       console.error('Login error:', err);
       alert('Login failed: ' + (error?.message || 'Unknown error'));
