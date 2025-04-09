@@ -35,6 +35,7 @@ export default function Login() {
 
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('username', data.login.user.username);
 
       console.log('Logged in:', data.login.user);
       alert('Login successful!');
