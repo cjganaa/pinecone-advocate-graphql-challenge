@@ -34,7 +34,7 @@ export default function Login() {
 
       localStorage.setItem('token', token);
 
-      console.log('Logged in:', data.login.user);
+      //console.log('Logged in:', data.login.user);
       alert('Login successful!');
       router.push('/');
     } catch (err) {

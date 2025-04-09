@@ -57,7 +57,7 @@ export default function Register() {
           password: formData.password,
         } as CreateUserVariables,
       });
-      console.log('User created:', data?.createUser);
+      //console.log('User created:', data?.createUser);
       alert('Registration successful!');
       setFormData({ username: '', email: '', password: '', confirmPassword: '' });
       setTimeout(() => router.push('/login'), 1000);

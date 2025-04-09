@@ -22,7 +22,7 @@ export default function Home() {
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-  console.log(data);
+  //console.log(data);
   return (
   <div>Hello From Pinecone Advocate Graphql Challenge 
     <button onClick={()=>mutateFunction({variables: { id: Id }})}>refetch</button>

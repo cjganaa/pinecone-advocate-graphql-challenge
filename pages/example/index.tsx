@@ -14,6 +14,6 @@ export default function Home() {
   const { loading, error, data } = useQuery(GET_TASKS);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-  console.log(data.getAllTasks);
+  //console.log(data.getAllTasks);
   return <div>Hello From Pinecone Advocate Graphql Challenge</div>;
 }
