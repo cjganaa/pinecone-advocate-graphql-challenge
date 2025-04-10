@@ -1,8 +1,24 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMutation, gql } from "@apollo/client";
+import {UpdateTaskModal} from "./components/ModalUpdateTask";
 
-// Define the GraphQL mutation
+const GET_All_TASKS = gql`
+  mutation GetAllDoneTasksLists($userId: String!){
+    getUserAllTasksLists(userId: $userId) {
+      id
+      name
+      description
+      isDone
+      priority
+      tags
+      createdAt
+      updatedAt
+      userId
+    }
+  }  
+`;
+
 const ADD_TASK_MUTATION = gql`
   mutation AddOne($name: String!, $description: String!, $priority: Int!, $tags: [String], $userId: String!) {
     addTask(name: $name, description: $description, priority: $priority, tags: $tags, userId: $userId) {
@@ -23,6 +39,9 @@ export default function Dashboard() {
   const [user, setUser] = useState({ username: "User", id: "", email: "" });
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refetch, { data, loading, error }] = useMutation(GET_All_TASKS, { variables: { userId: user.id } });
+  
+  const tasks = data?.getUserAllTasksLists || [];
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -36,12 +55,15 @@ export default function Dashboard() {
     } else {
       setIsLoading(false);
     }
-  }, [router]);
+    if (user.id !== "") {
+      refetch({ variables: { userId: user.id } });
+    }
+  }, [router, user.id]);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  console.log("Tasks:", tasks);
   return (
     <div>
       <DashboardHeader user={user} />
@@ -60,11 +82,43 @@ export default function Dashboard() {
         >
           Add New Task
         </button>
+        <h2 style={{ marginTop: "20px" }}>Tasks List</h2>
+        {loading ? (
+          <p>Loading tasks...</p>
+        ) : error ? (
+          <p>Error loading tasks: {error.message}</p>
+        ) : tasks.length === 0 ? (
+          <p>No tasks found.</p>
+        ) : (
+          <ul style={{ listStyleType: "none", padding: 0 }}>
+            {tasks.map((task: any) => (
+              <li key={task.name} style={{ marginBottom: "10px", padding: "10px", border: "1px solid #ccc" }}>
+                {task.isDone ? <span style={{ color: "green" }}>✔️</span> : <span style={{ color: "red" }}>❌</span>}
+                <h3>{task.name}</h3>
+                <p>{task.description}</p>
+                <p>Priority: {task.priority}</p>
+                <p>Tags: {task.tags.join(", ")}</p>
+                <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
+                <UpdateTaskModal
+                  initialTask={{
+                    taskId: task.id,
+                    userId: user.id,
+                    name: task.name,
+                    description: task.description,
+                    priority: task.priority,
+                    isDone: task.isDone,
+                    tags: task.tags,
+                  }}
+                  refetchTasks={() => refetch({ variables: { userId: user.id }})}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
-
       {/* Modal with Task Form */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <TaskForm userId={user.id} onSubmit={() => setIsModalOpen(false)} onClose={() => setIsModalOpen(false)} />
+        <TaskForm userId={user.id} onSubmit={() => setIsModalOpen(false)} onClose={() => setIsModalOpen(false)} refetchTasks={() => refetch({ variables: { userId: user.id }})} />
       </Modal>
     </div>
   );
@@ -148,7 +202,7 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
 };
 
 // Task Form Component
-const TaskForm = ({ userId, onSubmit, onClose }: { userId: string; onSubmit: () => void; onClose: () => void }) => {
+const TaskForm = ({ userId, onSubmit, onClose,refetchTasks }: { userId: string; onSubmit: () => void; onClose: () => void; refetchTasks: () => void }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -193,6 +247,7 @@ const TaskForm = ({ userId, onSubmit, onClose }: { userId: string; onSubmit: () 
       const { data } = await addTask({ variables: taskData });
       console.log("Task added:", data.addTask);
       onSubmit(); // Close modal on success
+      refetchTasks(); // Refetch tasks after adding a new one
     } catch (err) {
       console.error("Error adding task:", err);
     }
