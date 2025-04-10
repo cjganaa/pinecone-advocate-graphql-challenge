@@ -35,10 +35,10 @@ export default function Login() {
 
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('username', data.login.user.username);
+      localStorage.setItem("user", JSON.stringify(data.login.user));
 
       console.log('Logged in:', data.login.user);
-      alert('Login successful!');
+      // alert('Login successful!');
       router.push('/'); // Redirect to home page or dashboard
     } catch (err) {
       console.error('Login error:', err);
