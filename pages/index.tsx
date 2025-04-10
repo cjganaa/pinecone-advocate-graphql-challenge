@@ -67,7 +67,7 @@ export default function Dashboard() {
   return (
     <div>
       <DashboardHeader user={user} />
-      <main style={{ padding: "20px" }}>
+      <main style={{ padding: "20px", marginTop: "50px" }}>
         <button
           onClick={() => setIsModalOpen(true)}
           style={{
@@ -78,6 +78,9 @@ export default function Dashboard() {
             borderRadius: "4px",
             cursor: "pointer",
             marginTop: "10px",
+            position: "fixed",
+            top: "60px",
+            right: "20px",
           }}
         >
           Add New Task
@@ -92,26 +95,44 @@ export default function Dashboard() {
         ) : (
           <ul style={{ listStyleType: "none", padding: 0 }}>
             {tasks.map((task: any) => (
-              <li key={task.name} style={{ marginBottom: "10px", padding: "10px", border: "1px solid #ccc" }}>
-                {task.isDone ? <span style={{ color: "green" }}>✔️</span> : <span style={{ color: "red" }}>❌</span>}
-                <h3>{task.name}</h3>
-                <p>{task.description}</p>
-                <p>Priority: {task.priority}</p>
-                <p>Tags: {task.tags.join(", ")}</p>
-                <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>
-                <UpdateTaskModal
-                  initialTask={{
-                    taskId: task.id,
-                    userId: user.id,
-                    name: task.name,
-                    description: task.description,
-                    priority: task.priority,
-                    isDone: task.isDone,
-                    tags: task.tags,
-                  }}
-                  refetchTasks={() => refetch({ variables: { userId: user.id }})}
-                />
-              </li>
+              <li style={taskItemStyle}>
+              <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                <span style={{
+                  ...statusIconStyle,
+                  color: task.isDone ? '#2ecc71' : '#e74c3c'
+                }}>
+                  {task.isDone ? '✔️' : '❌'}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <h3 style={titleStyle}>{task.name}</h3>
+                  <p style={descriptionStyle}>{task.description}</p>
+                  <p style={metaStyle}>Priority: {task.priority}</p>
+                  <p style={tagsStyle}>
+                    Tags:{' '}
+                    {task.tags.map((tag:string, index:number) => (
+                      <span key={index} style={tagSpanStyle}>
+                        {tag}
+                      </span>
+                    ))}
+                  </p>
+                  <p style={metaStyle}>
+                    Created At: {new Date(task.createdAt).toLocaleString()}
+                  </p>
+                  <UpdateTaskModal
+                    initialTask={{
+                      taskId: task.id,
+                      userId: user.id,
+                      name: task.name,
+                      description: task.description,
+                      priority: task.priority,
+                      isDone: task.isDone,
+                      tags: task.tags,
+                    }}
+                    refetchTasks={() => refetch({ variables: { userId: user.id }})}
+                  />
+                </div>
+              </div>
+            </li>
             ))}
           </ul>
         )}
@@ -123,6 +144,58 @@ export default function Dashboard() {
     </div>
   );
 }
+
+const taskItemStyle = {
+  marginBottom: '15px',
+  padding: '15px',
+  border: '1px solid #e0e0e0',
+  borderRadius: '8px',
+  backgroundColor: '#ffffff',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+  transition: 'box-shadow 0.2s ease-in-out',
+  ':hover': {
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+  }
+};
+
+const statusIconStyle = {
+  marginRight: '10px',
+  fontSize: '1.2em',
+  verticalAlign: 'middle'
+};
+
+const titleStyle = {
+  margin: '0 0 8px 0',
+  fontSize: '1.2em',
+  color: '#333',
+  display: 'inline-block'
+};
+
+const descriptionStyle = {
+  margin: '0 0 8px 0',
+  color: '#666',
+  fontSize: '0.95em',
+  lineHeight: '1.4'
+};
+
+const metaStyle = {
+  margin: '4px 0',
+  color: '#888',
+  fontSize: '0.9em'
+};
+
+const tagsStyle = {
+  margin: '4px 0',
+  fontSize: '0.9em'
+};
+
+const tagSpanStyle = {
+  backgroundColor: '#f0f0f0',
+  padding: '2px 6px',
+  borderRadius: '4px',
+  marginRight: '5px',
+  color: '#555'
+};
 
 const DashboardHeader = ({ user }: { user: { username: string; id: string; email: string } }) => {
   const router = useRouter();
@@ -138,6 +211,11 @@ const DashboardHeader = ({ user }: { user: { username: string; id: string; email
     <header
       style={{
         display: "flex",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: "30px",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "15px 20px",

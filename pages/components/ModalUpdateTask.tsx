@@ -75,7 +75,7 @@ export const UpdateTaskModal = ({ initialTask, refetchTasks }: { initialTask: Ta
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Edit Task</button>
+      <button onClick={() => setIsOpen(true)} style={buttonStyle}>Edit Task</button>
 
       {isOpen && (
         <div style={modalOverlayStyle}>
@@ -141,13 +141,14 @@ export const UpdateTaskModal = ({ initialTask, refetchTasks }: { initialTask: Ta
               {error && <p style={{ color: 'red' }}>{error.message}</p>}
 
               <div style={buttonGroupStyle}>
-                <button type="submit" disabled={loading}>
+                <button type="submit" disabled={loading} style={buttonStyle}>
                   {loading ? 'Updating...' : 'Update Task'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
                   disabled={loading}
+                  style={{ ...buttonStyle, backgroundColor: 'red' }}
                 >
                   Cancel
                 </button>
@@ -190,3 +191,13 @@ const buttonGroupStyle = {
   display: 'flex',
   gap: '10px'
 };
+
+const buttonStyle = {
+  padding: "8px 16px",
+  backgroundColor: "#0070f3",
+  color: "#fff",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  marginTop: "10px",
+}
