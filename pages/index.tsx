@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMutation, gql } from "@apollo/client";
 import {UpdateTaskModal} from "../components/ModalUpdateTask";
+import Loading from "@/components/Loading";
 
 const GET_All_TASKS = gql`
   mutation GetAllDoneTasksLists($userId: String!){
@@ -61,7 +62,7 @@ export default function Dashboard() {
   }, [router, user.id]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
   console.log("Tasks:", tasks);
   return (
