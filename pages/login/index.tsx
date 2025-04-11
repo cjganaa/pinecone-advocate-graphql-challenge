@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation, gql } from '@apollo/client';
 import styles from '../../styles/Auth.module.css';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
 
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useMutation, gql } from '@apollo/client';
 import styles from '../../styles/Auth.module.css';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
 import { useRouter } from 'next/router';
 
 const CREATE_USER = gql`

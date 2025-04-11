@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMutation, gql } from "@apollo/client";
-import {UpdateTaskModal} from "./components/ModalUpdateTask";
+import {UpdateTaskModal} from "../components/ModalUpdateTask";
 
 const GET_All_TASKS = gql`
   mutation GetAllDoneTasksLists($userId: String!){
